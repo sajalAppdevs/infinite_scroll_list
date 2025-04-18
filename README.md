@@ -1,4 +1,7 @@
-# Infinite Scroll List
+# infinite_scroll_list
+
+[![pub package](https://img.shields.io/pub/v/infinite_scroll_list.svg)](https://pub.dev/packages/infinite_scroll_list)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Flutter package that provides an easy-to-use infinite scrolling list widget with built-in loading indicators and pagination support. Perfect for implementing endless scrolling lists, feed interfaces, or any scenario where you need to load data incrementally as the user scrolls.
 
@@ -16,7 +19,9 @@ A Flutter package that provides an easy-to-use infinite scrolling list widget wi
 - ⚡ Built-in loading indicators
 - 📦 Minimal setup required
 
-## Installation
+## Getting Started
+
+### Installation
 
 Add this to your package's `pubspec.yaml` file:
 
@@ -31,33 +36,37 @@ Then run:
 $ flutter pub get
 ```
 
-## Usage
-
-Here's a simple example of how to use the InfiniteListView:
+### Basic Usage
 
 ```dart
+import 'package:infinite_scroll_list/infinite_scroll_list.dart';
+
 InfiniteListView<String>(
   delegate: ItemBuilderDelegate<String>(
     pageRequest: (pageKey) async {
       // Fetch your data here
-      return ['Item 1', 'Item 2', 'Item 3'];
+      // pageKey starts from 0 and increments automatically
+      final response = await yourApiCall(pageKey);
+      return response.items; // Return List<String>
     },
     itemBuilder: (context, item, index) => ListTile(
       title: Text(item),
     ),
+    pageSize: 20, // Optional: defaults to 20
   ),
 )
 ```
 
-## API Documentation
+## API Reference
 
 ### InfiniteListView
 
-The main widget that implements the infinite scrolling functionality.
+The main widget that implements infinite scrolling functionality.
 
 ```dart
 InfiniteListView<T>(
   delegate: ItemBuilderDelegate<T>(...),
+  key: Key('your-key'), // Optional
 )
 ```
 
@@ -65,20 +74,51 @@ InfiniteListView<T>(
 
 Handles the item building and data fetching logic.
 
-Parameters:
-- `itemBuilder`: A function that builds the widget for each item
-- `pageRequest`: A function that fetches data for the given page
-- `pageSize`: Number of items per page (default: 20)
+#### Constructor
+
+```dart
+ItemBuilderDelegate<T>({
+  required ItemBuilder<T> itemBuilder,
+  required Future<List<T>> Function(int pageKey) pageRequest,
+  int pageSize = 20,
+})
+```
+
+#### Parameters
+
+- `itemBuilder`: `(BuildContext context, T item, int index) => Widget`
+  - Builds the widget for each item in the list
+  - Called for each item when it needs to be displayed
+
+- `pageRequest`: `(int pageKey) => Future<List<T>>`
+  - Async function that fetches data for the given page
+  - `pageKey` starts from 0 and increments automatically
+  - Should return a List of items of type T
+
+- `pageSize`: `int`
+  - Number of items to load per page
+  - Defaults to 20
 
 ### LoadingIndicator
 
 A customizable loading indicator widget shown during data fetching.
 
-## Example
+```dart
+const LoadingIndicator()
+```
 
-A more complete example showing how to implement an infinite scrolling list with custom items:
+## Advanced Example
+
+Here's a more complete example showing how to implement an infinite scrolling list with custom items:
 
 ```dart
+class Post {
+  final String title;
+  final String description;
+  
+  Post({required this.title, required this.description});
+}
+
 InfiniteListView<Post>(
   delegate: ItemBuilderDelegate<Post>(
     pageSize: 10,
@@ -104,6 +144,14 @@ InfiniteListView<Post>(
 )
 ```
 
+## Contributing
+
+Contributions are welcome! If you find a bug or want to add a feature, please feel free to:
+
+1. Open an issue
+2. Create a pull request
+3. Submit feedback or suggestions
+
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
