@@ -1,3 +1,9 @@
+## 0.0.2
+
+* Updated package dependencies
+* Improved code stability and performance
+* Enhanced documentation
+
 ## 0.0.1
 
 * Initial release of infinite_scroll_list

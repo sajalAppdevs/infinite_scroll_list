@@ -1,6 +1,6 @@
 name: infinite_scroll_list
 description: "A Flutter package that provides an easy-to-use infinite scrolling list widget with built-in loading indicators and pagination support."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/sajalAppdevs/infinite_scroll_list
 
 environment:
